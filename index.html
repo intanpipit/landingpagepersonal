@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intan's Biography - Intan Pipit Rahma Wati</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lavender-blush: #FFF0F5;
+            --blush: #FFD1DC;
+            --accent-pink: #E0B0FF;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, var(--lavender-blush) 0%, var(--blush) 100%);
+            background-attachment: fixed;
+            color: #4A4A4A;
+        }
+
+        .diary-font {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(255, 182, 193, 0.2);
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+
+        .nav-link.active {
+            background-color: white;
+            color: #D87093;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* Transition Animations */
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Loading Overlay Style */
+        #loader-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 240, 245, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 50;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+        }
+
+        .heart-loader {
+            width: 50px;
+            height: 50px;
+            background-color: #f472b6;
+            animation: heartBeat 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+            clip-path: path('M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z');
+            transform: scale(2);
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1.5); }
+            50% { transform: scale(2); }
+            100% { transform: scale(1.5); }
+        }
+
+        /* Profile & Double Mascot Container */
+        .profile-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            width: 100%;
+        }
+
+        .profile-ring {
+            position: relative;
+            padding: 6px;
+            background: linear-gradient(45deg, #f472b6, #e0b0ff, #f472b6, #ffffff);
+            background-size: 300% 300%;
+            animation: borderRotate 4s linear infinite;
+            border-radius: 9999px;
+            box-shadow: 0 15px 35px -5px rgba(244, 114, 182, 0.4);
+            z-index: 10;
+        }
+
+        @keyframes borderRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .mascot {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            z-index: 11;
+        }
+
+        .mascot-right {
+            left: calc(50% + 80px);
+            bottom: -5px;
+            animation: mascotBounce 2s ease-in-out infinite;
+        }
+
+        .mascot-left {
+            right: calc(50% + 80px);
+            bottom: -5px;
+            animation: mascotBounce 2.5s ease-in-out infinite reverse;
+        }
+
+        @keyframes mascotBounce {
+            0%, 100% { transform: translateY(0) rotate(5deg); }
+            50% { transform: translateY(-12px) rotate(-5deg); }
+        }
+
+        .hobby-card:hover img {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4 md:p-8">
+
+    <!-- Header -->
+    <header class="text-center mb-8">
+        <h1 class="diary-font text-5xl md:text-6xl text-pink-500 mb-2">Intan's Biography</h1>
+        <div class="h-1 w-24 bg-pink-300 mx-auto rounded-full"></div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-4xl glass-card overflow-hidden relative">
+        
+        <!-- Animated Loader -->
+        <div id="loader-overlay">
+            <div class="heart-loader"></div>
+        </div>
+        
+        <nav class="flex flex-wrap justify-center gap-2 p-4 border-b border-white/40 bg-white/20">
+            <button onclick="showSection('identitas')" id="btn-identitas" class="nav-link active px-6 py-2 rounded-full font-semibold text-sm">
+                Identitas Diri
+            </button>
+            <button onclick="showSection('hobi')" id="btn-hobi" class="nav-link px-6 py-2 rounded-full font-semibold text-sm">
+                Hobi
+            </button>
+            <button onclick="showSection('pendidikan')" id="btn-pendidikan" class="nav-link px-6 py-2 rounded-full font-semibold text-sm">
+                Pendidikan
+            </button>
+            <button onclick="showSection('prestasi')" id="btn-prestasi" class="nav-link px-6 py-2 rounded-full font-semibold text-sm">
+                Pengalaman & Prestasi
+            </button>
+        </nav>
+
+        <div class="p-6 md:p-10" id="content-area">
+            
+            <!-- SECTION 1: IDENTITAS -->
+            <section id="identitas" class="section-content active">
+                <div class="flex flex-col items-center max-w-2xl mx-auto">
+                    
+                    <div class="profile-container">
+                        <!-- Mascot Left (New) -->
+                        <div class="mascot mascot-left">
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="60" r="35" fill="#E0B0FF" /> <!-- Purple Mascot -->
+                                <path d="M30 35L15 10L45 30" fill="#E0B0FF" />
+                                <path d="M70 35L85 10L55 30" fill="#E0B0FF" />
+                                <circle cx="35" cy="55" r="4" fill="#333" />
+                                <circle cx="65" cy="55" r="4" fill="#333" />
+                                <path d="M45 72C45 72 50 77 55 72" stroke="#333" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+
+                        <div class="profile-ring">
+                            <img src="https://lh3.googleusercontent.com/d/1_B2rOaXgNhkruwcbX5S7YHb5LQV0rjGx=s2000" 
+                                 alt="Foto Profil Intan" 
+                                 class="w-40 h-40 md:w-56 md:h-56 rounded-full object-cover border-4 border-white shadow-xl">
+                        </div>
+
+                        <!-- Mascot Right -->
+                        <div class="mascot mascot-right">
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="60" r="35" fill="#FFB7C5" /> <!-- Pink Mascot -->
+                                <path d="M30 35L15 10L45 30" fill="#FFB7C5" />
+                                <path d="M70 35L85 10L55 30" fill="#FFB7C5" />
+                                <circle cx="35" cy="55" r="4" fill="#333" />
+                                <circle cx="65" cy="55" r="4" fill="#333" />
+                                <path d="M45 70C45 70 50 75 55 70" stroke="#333" stroke-width="2" stroke-linecap="round" />
+                                <circle cx="30" cy="65" r="5" fill="#FF99AA" opacity="0.6" />
+                                <circle cx="70" cy="65" r="5" fill="#FF99AA" opacity="0.6" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full bg-white/40 p-6 md:p-10 rounded-3xl border border-white">
+                        <div class="inline-block px-3 py-1 bg-pink-100 text-pink-600 rounded-lg text-xs font-bold uppercase tracking-wider mb-4">Biodata Lengkap</div>
+                        <h2 class="text-3xl font-bold mb-8 text-pink-600 diary-font">Intan Pipit Rahma Wati</h2>
+                        
+                        <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-6 text-sm md:text-base">
+                            <div class="flex items-center gap-2 text-pink-500 font-bold uppercase tracking-tight text-xs">
+                                <span>🎂</span> Lahir
+                            </div>
+                            <div class="text-gray-700 font-medium">: Magetan, 18 November 2007</div>
+
+                            <div class="flex items-center gap-2 text-pink-500 font-bold uppercase tracking-tight text-xs">
+                                <span>👩</span> Gender
+                            </div>
+                            <div class="text-gray-700 font-medium">: Perempuan</div>
+
+                            <div class="flex items-center gap-2 text-pink-500 font-bold uppercase tracking-tight text-xs">
+                                <span>📍</span> Alamat
+                            </div>
+                            <div class="text-gray-700 font-medium leading-relaxed">: Ds. Manjung, Kec. Panekan, Kab. Magetan, Jawa Timur</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: HOBI -->
+            <section id="hobi" class="section-content">
+                <h2 class="text-3xl font-bold mb-8 text-center diary-font text-pink-600">Hobi Saya</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="hobby-card relative overflow-hidden rounded-2xl h-40 shadow-lg group">
+                        <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&q=80&w=400" alt="Memasak" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 flex items-end p-4"><span class="text-white font-bold">Memasak</span></div>
+                    </div>
+                    <div class="hobby-card relative overflow-hidden rounded-2xl h-40 shadow-lg group">
+                        <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400" alt="Membaca" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 flex items-end p-4"><span class="text-white font-bold">Membaca</span></div>
+                    </div>
+                    <div class="hobby-card relative overflow-hidden rounded-2xl h-40 shadow-lg group">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=400" alt="Kuliner" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 flex items-end p-4"><span class="text-white font-bold">Kuliner</span></div>
+                    </div>
+                    <div class="hobby-card relative overflow-hidden rounded-2xl h-40 shadow-lg group">
+                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&q=80&w=400" alt="Hiking" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 flex items-end p-4"><span class="text-white font-bold">Hiking</span></div>
+                    </div>
+                    <div class="hobby-card relative overflow-hidden rounded-2xl h-40 shadow-lg group">
+                        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=400" alt="Traveling" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 flex items-end p-4"><span class="text-white font-bold">Traveling</span></div>
+                    </div>
+                    <div class="hobby-card relative overflow-hidden rounded-2xl h-40 shadow-lg group">
+                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=400" alt="Baking" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 flex items-end p-4"><span class="text-white font-bold">Baking</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: PENDIDIKAN -->
+            <section id="pendidikan" class="section-content">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-8 text-center diary-font text-pink-600">Riwayat Pendidikan</h2>
+                    <div class="relative border-l-2 border-pink-200 ml-4 space-y-10">
+                        <div class="relative pl-8">
+                            <div class="absolute w-4 h-4 bg-pink-400 rounded-full -left-[9px] top-1"></div>
+                            <div class="bg-white/60 p-5 rounded-2xl border border-white">
+                                <span class="text-xs font-bold text-pink-500">2023 - 2026 (Sekarang)</span>
+                                <h3 class="text-xl font-bold">SMAN 1 MAGETAN</h3>
+                                <p class="text-gray-600">Sekolah Menengah Atas</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-8">
+                            <div class="absolute w-4 h-4 bg-pink-300 rounded-full -left-[9px] top-1"></div>
+                            <div class="bg-white/60 p-5 rounded-2xl border border-white">
+                                <span class="text-xs font-bold text-pink-400">2020 - 2023</span>
+                                <h3 class="text-xl font-bold">SMPN 1 MAGETAN</h3>
+                                <p class="text-gray-600">Sekolah Menengah Pertama</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-8">
+                            <div class="absolute w-4 h-4 bg-pink-200 rounded-full -left-[9px] top-1"></div>
+                            <div class="bg-white/60 p-5 rounded-2xl border border-white">
+                                <span class="text-xs font-bold text-pink-400">2014 - 2020</span>
+                                <h3 class="text-xl font-bold">SDN MANJUNG</h3>
+                                <p class="text-gray-600">Sekolah Dasar</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-8">
+                            <div class="absolute w-4 h-4 bg-pink-100 rounded-full -left-[9px] top-1"></div>
+                            <div class="bg-white/60 p-5 rounded-2xl border border-white">
+                                <span class="text-xs font-bold text-pink-300">2013 - 2014</span>
+                                <h3 class="text-xl font-bold">TK DHARMA WANITA 1</h3>
+                                <p class="text-gray-600">Taman Kanak-kanak</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: PRESTASI -->
+            <section id="prestasi" class="section-content">
+                <h2 class="text-3xl font-bold mb-8 text-center diary-font text-pink-600">Pengalaman & Prestasi</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white/70 p-4 rounded-2xl flex items-center gap-4 border border-white shadow-sm hover:scale-105 transition-all">
+                        <div class="text-2xl">📻</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Bendahara BROADCAST SMASA</h4>
+                            <p class="text-xs text-gray-500">Tahun 2024 - 2025</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-2xl flex items-center gap-4 border border-white shadow-sm hover:scale-105 transition-all">
+                        <div class="text-2xl">✨</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Eligible 1 SD & 3 SMP</h4>
+                            <p class="text-xs text-gray-500">Peringkat Teratas Akademik</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-2xl flex items-center gap-4 border border-white shadow-sm hover:scale-105 transition-all">
+                        <div class="text-2xl">🏆</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Juara 1 Seleksi MIPA</h4>
+                            <p class="text-xs text-gray-500">Tingkat SD (Matematika)</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-2xl flex items-center gap-4 border border-white shadow-sm hover:scale-105 transition-all">
+                        <div class="text-2xl">🏅</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Juara 1 KOMPAK (Basa Jawa)</h4>
+                            <p class="text-xs text-gray-500">TA 2024/2025 & 2025/2026</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-2xl flex items-center gap-4 border border-white shadow-sm hover:scale-105 transition-all">
+                        <div class="text-2xl">✍️</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Crew Majalah SNESMA</h4>
+                            <p class="text-xs text-gray-500">Pengalaman Jurnalistik SMP</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-2xl flex items-center gap-4 border border-white shadow-sm hover:scale-105 transition-all">
+                        <div class="text-2xl">⛰️</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Pendakian Gunung</h4>
+                            <p class="text-xs text-gray-500">Lawu & Jobolarangan (2024-2025)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="mt-8 text-center text-gray-500 text-sm font-medium">
+        <p>Est 2025 Intan Pipit Rahma Wati</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            const loader = document.getElementById('loader-overlay');
+            const sections = document.querySelectorAll('.section-content');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // Start Loading Animation
+            loader.style.display = 'flex';
+            
+            // Fake Delay to show animation
+            setTimeout(() => {
+                // Hide All Sections
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Update Nav Buttons
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Show Target Section
+                document.getElementById(sectionId).classList.add('active');
+                document.getElementById('btn-' + sectionId).classList.add('active');
+                
+                // Stop Loading Animation
+                loader.style.display = 'none';
+                
+                // Smooth scroll to top of card
+                document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+            }, 500); // 500ms delay for nice transition feel
+        }
+    </script>
+</body>
+</html>
